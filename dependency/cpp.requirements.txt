@@ -1,0 +1,1 @@
+cpp-logger,https://github.com/hariharan-devarajan/cpp-logger.git,dev,1

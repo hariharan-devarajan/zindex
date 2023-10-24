@@ -317,6 +317,17 @@ WHERE key = :query
             ++matches;
         }
     }
+    size_t total_lines() {
+        auto stmt = db_.prepare("select MAX(line) from LineOffsets");
+        if (stmt.step()) return 0;
+        return static_cast<size_t>(stmt.columnInt64(0));
+    }
+
+    size_t total_size() {
+        auto stmt = db_.prepare("SELECT SUM(length)  FROM LineOffsets;");
+        if (stmt.step()) return 0;
+        return static_cast<size_t>(stmt.columnInt64(0));
+    }
 
     size_t customQuery(const std::string &customQuery, LineFunction lineFunc) {
         auto stmt = db_.prepare(customQuery);
@@ -434,6 +445,7 @@ WHERE key = :query
                         throw std::runtime_error(
                                 "Tried to cross a gzip stream boundary");
                     context.reset();
+                    break;
                 }
             } while (zs.stream.avail_out);
         } while (skipping);
@@ -795,6 +807,12 @@ size_t Index::queryIndexMulti(const std::string &index,
 size_t
 Index::queryCustom(const std::string &customQuery, LineFunction lineFunc) {
     return impl_->customQuery(customQuery, lineFunc);
+}
+size_t Index::total_lines() {
+    return impl_->total_lines();
+}
+size_t Index::total_size() {
+    return impl_->total_size();
 }
 
 Index::Builder::~Builder() {

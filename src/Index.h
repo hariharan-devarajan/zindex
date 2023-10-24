@@ -94,7 +94,12 @@ public:
     // Query all indexes with the supplied query. Each
     // matching line number is passed to the supplied lineFunction. Returns
     // the total number of index matches
-    size_t queryCustom(const std::string &customQuery, LineFunction lineFunc);
+    size_t queryCustom(const std::string &customQuery, LineFunction lineFunc);\
+
+    // Get total number of lines from index
+    size_t total_lines();
+    // Get total number of lines from index
+    size_t total_size();
 
     // Return the number of entries in a particular sub-index.
     size_t indexSize(const std::string &index) const;
