@@ -3,10 +3,12 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+
 print(sys.argv)
 from setuptools import Extension, setup, find_namespace_packages
 from setuptools.command.build_ext import build_ext
 import site
+import subprocess
 
 # Convert distutils Windows platform specifiers to CMake -A arguments
 PLAT_TO_CMAKE = {
@@ -15,6 +17,16 @@ PLAT_TO_CMAKE = {
     "win-arm32": "ARM",
     "win-arm64": "ARM64",
 }
+
+try:
+    import pybind11
+except ImportError:
+    proc = subprocess.Popen([sys.executable, '-m', 'pip', 'install', 'pybind11==2.11.1'], stdout=subprocess.PIPE, shell=True)
+    (out, err) = proc.communicate()
+    if out:
+        print(out.decode('utf-8'))
+    if err:
+        print(err.decode('utf-8'))
 
 
 # A CMakeExtension needs a sourcedir instead of a file list.
@@ -32,7 +44,7 @@ class CMakeBuild(build_ext):
         from distutils.sysconfig import get_python_lib
         install_prefix = f"{get_python_lib()}/zindex"
         if "DLIO_LOGGER_USER" in os.environ:
-            install_prefix=f"{site.USER_SITE}/zindex"
+            install_prefix = f"{site.USER_SITE}/zindex"
             # cmake_args += [f"-DUSER_INSTALL=ON"]
         if "ZINDEX_DIR" in os.environ:
             install_prefix = os.environ['ZINDEX_DIR']
@@ -44,7 +56,8 @@ class CMakeBuild(build_ext):
         import pybind11 as py
         py_cmake_dir = py.get_cmake_dir()
         # py_cmake_dir = os.popen('python3 -c " import pybind11 as py; print(py.get_cmake_dir())"').read() #python("-c", "import pybind11 as py; print(py.get_cmake_dir())", output=str).strip()
-        cmake_args += [f"-DCMAKE_PREFIX_PATH={install_prefix}", f"-Dpybind11_DIR={py_cmake_dir}"]
+        cmake_args += [f"-DCMAKE_PREFIX_PATH={install_prefix}",
+                       f"-Dpybind11_DIR={py_cmake_dir}"]
         print(cmake_args)
         # Must be in this form due to bug in .resolve() only fixed in Python 3.10+
         ext_fullpath = project_dir / self.get_ext_fullpath(ext.name)
@@ -70,16 +83,17 @@ class CMakeBuild(build_ext):
         #    f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={extdir}/lib",
         #    f"-DPYTHON_EXECUTABLE={sys.executable}",
         #    f"-DCMAKE_BUILD_TYPE={cfg}",  # not used on MSVC, but no harm
-        #]
+        # ]
         build_args = []
         # Adding CMake arguments set as environment variable
         # (needed e.g. to build for ARM OSx on conda-forge)
         if "CMAKE_ARGS" in os.environ:
-            cmake_args += [item for item in os.environ["CMAKE_ARGS"].split(" ") if item]
+            cmake_args += [item for item in os.environ["CMAKE_ARGS"].split(" ")
+                           if item]
 
         # In this example, we pass in the version to C++. You might not need to.
-        cmake_args += [f"-DEXAMPLE_VERSION_INFO={self.distribution.get_version()}"]
-
+        cmake_args += [
+            f"-DEXAMPLE_VERSION_INFO={self.distribution.get_version()}"]
 
         # Set CMAKE_BUILD_PARALLEL_LEVEL to control the parallel build level
         # across all generators.
@@ -99,7 +113,9 @@ class CMakeBuild(build_ext):
             ["cmake", "--install", "."], cwd=build_temp, check=True
         )
 
+
 import pathlib
+
 here = pathlib.Path(__file__).parent.resolve()
 long_description = (here / "README.md").read_text(encoding="utf-8")
 # The information here can also be placed in setup.cfg - better separation of
