@@ -132,6 +132,7 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3 :: Only",
     ],
+    setup_requires=['pybind11'],
     install_requires=["pybind11"],
     requires=["pybind11"],
     keywords="profiler, deep learning, I/O, benchmark, NPZ, pytorch benchmark, tensorflow benchmark",
