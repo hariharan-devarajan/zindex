@@ -30,9 +30,9 @@ class CMakeBuild(build_ext):
     def build_extension(self, ext: CMakeExtension) -> None:
         cmake_args = []
         from distutils.sysconfig import get_python_lib
-        install_prefix = f"{get_python_lib()}/zindex"
+        install_prefix = f"{get_python_lib()}/zindex_py"
         if "DLIO_LOGGER_USER" in os.environ:
-            install_prefix=f"{site.USER_SITE}/zindex"
+            install_prefix=f"{site.USER_SITE}/zindex_py"
             # cmake_args += [f"-DUSER_INSTALL=ON"]
         if "ZINDEX_DIR" in os.environ:
             install_prefix = os.environ['ZINDEX_DIR']
@@ -141,7 +141,7 @@ setup(
         "Source": "https://github.com/hariharan-devarajan/zindex",
     },
     packages=find_namespace_packages(where="."),
-    package_dir={"zindex": "zindex"},
+    package_dir={"zindex_py": "zindex"},
     ext_modules=[CMakeExtension("zindex_py")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
