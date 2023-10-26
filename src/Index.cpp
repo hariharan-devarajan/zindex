@@ -324,7 +324,7 @@ WHERE key = :query
     }
 
     size_t total_size() {
-        auto stmt = db_.prepare("SELECT SUM(length)  FROM LineOffsets;");
+        auto stmt = db_.prepare("select MAX(uncompressedEndOffset) from AccessPoints;");
         if (stmt.step()) return 0;
         return static_cast<size_t>(stmt.columnInt64(0));
     }
