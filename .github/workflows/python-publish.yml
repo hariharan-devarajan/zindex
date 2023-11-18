@@ -9,6 +9,7 @@
 name: Upload Python Package
 
 on:
+  push:
   release:
     types: [published]
 
@@ -21,8 +22,9 @@ jobs:
       fail-fast: false
       matrix:
         python: ['3.7', '3.8', '3.9', '3.10']
+        os: [ubuntu-20.04, ubuntu-22.04]
     name: ${{ matrix.python }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v3
@@ -41,7 +43,8 @@ jobs:
         export ZINDEX_WHEEL=1
         python setup.py bdist_wheel
         auditwheel show dist/*.whl
-        auditwheel repair --plat manylinux_2_34_x86_64 dist/*.whl -w dist/
+        platform=`auditwheel show dist/zindex_py-0.0.1-cp38-cp38-linux_x86_64.whl | grep manylinux_ | awk -F'"' '{print $2}'`
+        auditwheel repair --plat $platform dist/*.whl -w dist/
         rm dist/*linux_x86_64.whl
     - name: Publish package
       uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
