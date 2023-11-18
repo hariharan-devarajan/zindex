@@ -203,12 +203,8 @@ set(ZINDEX_SOURCE_FILES
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Pipe.h
         ${CMAKE_CURRENT_SOURCE_DIR}/ext/sqlite/sqlite3.c)
 
-add_library(${PROJECT_NAME}_core SHARED)
+add_library(${PROJECT_NAME}_core SHARED ${ZINDEX_SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME}_core ${DEPENDENCY_LIB})
-target_sources(${PROJECT_NAME}_core
-        PRIVATE
-        ${ZINDEX_SOURCE_FILES}
-)
 target_include_directories(${PROJECT_NAME}_core
         PRIVATE
         # where the library itself will look for its internal headers
