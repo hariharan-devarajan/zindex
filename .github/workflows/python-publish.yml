@@ -41,6 +41,7 @@ jobs:
       run: |
         export ZINDEX_WHEEL=1
         python setup.py bdist_wheel
+        auditwheel show dist/*.whl
         auditwheel repair dist/*.whl
     - name: Publish package
       uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
