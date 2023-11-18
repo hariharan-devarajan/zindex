@@ -84,7 +84,14 @@ class CMakeBuild(build_ext):
 
         # In this example, we pass in the version to C++. You might not need to.
         cmake_args += [f"-DEXAMPLE_VERSION_INFO={self.distribution.get_version()}"]
-
+        cc = os.environ.get("CC")
+        if cc:
+            cmake_args += [f"-DCMAKE_C_COMPILER={cc}"]
+            cmake_args += [f"-DCMAKE_C_COMPILER_ENV_VAR=CC"]
+        cxx = os.environ.get("CXX")
+        if cxx:
+            cmake_args += [f"-DCMAKE_CXX_COMPILER={cxx}"]
+            cmake_args += [f"-DCMAKE_CXX_COMPILER_ENV_VAR=CXX"]
 
         # Set CMAKE_BUILD_PARALLEL_LEVEL to control the parallel build level
         # across all generators.
