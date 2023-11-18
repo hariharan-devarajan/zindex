@@ -1,4 +1,7 @@
-[![Build Status](https://travis-ci.org/mattgodbolt/zindex.svg?branch=master)](https://travis-ci.org/mattgodbolt/zindex) [![codecov](https://codecov.io/gh/mattgodbolt/zindex/branch/master/graph/badge.svg)](https://codecov.io/gh/mattgodbolt/zindex)
+### DISCLAIMER
+
+This repo is a fork of the original repo located at https://github.com/mattgodbolt/zindex.
+We modify this repo for using it cohesively with DLIO Profiler https://github.com/hariharan-devarajan/dlio-profiler.
 
 
 `zindex` creates and queries an index on a compressed, line-based text file in a

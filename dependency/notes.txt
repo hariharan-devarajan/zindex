@@ -1,0 +1,2 @@
+PYTHON_SITE=/home/haridev/projects/zindex/venv/lib/python3.10/site-packages
+./install_dependency.sh https://github.com/hariharan-devarajan/cpp-logger.git $PWD/cpp-logger ${PYTHON_SITE}/zindex dev 1
