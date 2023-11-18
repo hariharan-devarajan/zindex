@@ -43,7 +43,8 @@ jobs:
         export ZINDEX_WHEEL=1
         python setup.py bdist_wheel
         auditwheel show dist/*.whl
-        platform=`auditwheel show dist/zindex_py-0.0.1-cp38-cp38-linux_x86_64.whl | grep manylinux_ | awk -F'"' '{print $2}'`
+        platform=$(auditwheel show dist/zindex_py-0.0.1-cp38-cp38-linux_x86_64.whl | grep manylinux_ | awk -F'"' '{print $2}')
+        echo $platform
         auditwheel repair --plat $platform dist/*.whl -w dist/
         rm dist/*linux_x86_64.whl
     - name: Publish package
