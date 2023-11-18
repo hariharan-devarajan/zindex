@@ -37,7 +37,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y gcc g++ libtool-bin openmpi-bin libopenmpi-dev
         python -m pip install --upgrade pip
-        pip install build wheel auditwheel
+        pip install build wheel auditwheel patchelf
     - name: Build package
       run: |
         export ZINDEX_WHEEL=1
