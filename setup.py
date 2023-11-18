@@ -28,29 +28,34 @@ class CMakeExtension(Extension):
 
 class CMakeBuild(build_ext):
     def build_extension(self, ext: CMakeExtension) -> None:
+        is_wheel = os.getenv("ZINDEX_WHEEL", "0") == "1"
         cmake_args = []
         from distutils.sysconfig import get_python_lib
+        project_dir = Path.cwd()
+        ext_fullpath = project_dir / self.get_ext_fullpath(ext.name)
+        extdir = ext_fullpath.parent.parent.resolve()
+        sourcedir = extdir.parent.resolve()
+        print(f"{extdir}")
         install_prefix = f"{get_python_lib()}/zindex_py"
-        if "DLIO_LOGGER_USER" in os.environ:
+        if "ZINDEX_USER" in os.environ:
             install_prefix=f"{site.USER_SITE}/zindex_py"
             # cmake_args += [f"-DUSER_INSTALL=ON"]
         if "ZINDEX_DIR" in os.environ:
             install_prefix = os.environ['ZINDEX_DIR']
+        if is_wheel:
+            install_prefix = f"{extdir}/zindex_py"
+            cmake_args += [f"-DZINDEX_PYTHON_SITE={extdir}"]
         cmake_args += [f"-DCMAKE_INSTALL_PREFIX={install_prefix}"]
-        if "DLIO_PYTHON_SITE" in os.environ:
-            dlio_site = os.environ['DLIO_PYTHON_SITE']
+        
+        if "ZINDEX_PYTHON_SITE" in os.environ:
+            zindex_site = os.environ['ZINDEX_PYTHON_SITE']
             cmake_args += [f"-DZINDEX_PYTHON_SITE={zindex_site}"]
-        project_dir = Path.cwd()
         import pybind11 as py
         py_cmake_dir = py.get_cmake_dir()
         # py_cmake_dir = os.popen('python3 -c " import pybind11 as py; print(py.get_cmake_dir())"').read() #python("-c", "import pybind11 as py; print(py.get_cmake_dir())", output=str).strip()
         cmake_args += [f"-DCMAKE_PREFIX_PATH={install_prefix}", f"-Dpybind11_DIR={py_cmake_dir}"]
         print(cmake_args)
         # Must be in this form due to bug in .resolve() only fixed in Python 3.10+
-        ext_fullpath = project_dir / self.get_ext_fullpath(ext.name)
-        extdir = ext_fullpath.parent.parent.resolve()
-        sourcedir = extdir.parent.resolve()
-        print(f"{extdir}")
         # Using this requires trailing slash for auto-detection & inclusion of
         # auxiliary "native" libs
         build_type = os.environ.get("CMAKE_BUILD_TYPE", "Release")
@@ -140,9 +145,9 @@ setup(
         "Bug Reports": "https://github.com/hariharan-devarajan/zindex/issues",
         "Source": "https://github.com/hariharan-devarajan/zindex",
     },
-    packages=find_namespace_packages(where="."),
+    packages=find_namespace_packages(include=['dlio_profiler', 'dlp_analyzer']),
     package_dir={"zindex_py": "zindex"},
-    ext_modules=[CMakeExtension("zindex_py")],
+    ext_modules=[CMakeExtension("zindex.zindex_py")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
     extras_require={"test": ["pytest>=6.0"]},

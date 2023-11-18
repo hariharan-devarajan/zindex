@@ -51,6 +51,7 @@ option(ZINDEX_ENABLE_TESTS "Enable internal tests" Off)
 if (BUILD_PYTHON_BINDINGS)
     if (ZINDEX_PYTHON_SITE)
         set(PYTHON_SITE_PACKAGES "${ZINDEX_PYTHON_SITE}")
+        set(MAIN_PYTHON_SITE_PACKAGES ${PYTHON_SITE_PACKAGES})
     else()
         set(PYTHON_SITE_PACKAGES ${CMAKE_INSTALL_PREFIX})
         execute_process (COMMAND python3 -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())" OUTPUT_VARIABLE MAIN_PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -58,7 +59,8 @@ if (BUILD_PYTHON_BINDINGS)
     set(PYTHON_SITE_PACKAGES ${PYTHON_SITE_PACKAGES})
     include_directories(${PYTHON_SITE_PACKAGES}/zindex_py/include)
     link_directories(${PYTHON_SITE_PACKAGES}/zindex_py/lib)
-    message("-- " "[Python] ${MAIN_PYTHON_SITE_PACKAGES} found for installing python binding")
+    message("-- " "[Python] Main Site ${MAIN_PYTHON_SITE_PACKAGES} found for installing python binding")
+    message("-- " "[Python] Site ${MAIN_PYTHON_SITE_PACKAGES} found for installing python binding")
 endif()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(ZINDEX_CMAKE_DIR ${CMAKE_SOURCE_DIR}/CMake ${CMAKE_BINARY_DIR}/lib/cmake ${PYTHON_SITE_PACKAGES}/zindex_py/lib/cmake)
@@ -80,9 +82,12 @@ if (NOT ZINDEX_INSTALL_DATA_DIR)
     set(ZINDEX_INSTALL_DATA_DIR ${CMAKE_INSTALL_PREFIX}/share)
 endif ()
 
-if (NOT CMAKE_INSTALL_RPATH)
+if (NOT CMAKE_INSTALL_RPATH AND NOT DEFINED ENV{ZINDEX_WHEEL})
+    message("-- " "[ZINDEX] using RPATH")	
     set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib:${PYTHON_SITE_PACKAGES}/lib:${PYTHON_SITE_PACKAGES}/lib64")
     set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+else()
+    message("-- " "[ZINDEX] not using RPATH")	
 endif ()
 
 #------------------------------------------------------------------------------
@@ -322,7 +327,9 @@ install(TARGETS ${PROJECT_NAME}
 install(TARGETS ${PROJECT_NAME}_py
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-file(GENERATE OUTPUT ${CMAKE_BINARY_DIR}/symlink.sh CONTENT "echo -- Installing: symlink $<TARGET_FILE_NAME:${PROJECT_NAME}_py>;ln -sf ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/$<TARGET_FILE_NAME:${PROJECT_NAME}_py> ${PYTHON_SITE_PACKAGES}/$<TARGET_FILE_NAME:${PROJECT_NAME}_py>")
+#file(GENERATE OUTPUT ${CMAKE_BINARY_DIR}/symlink.sh CONTENT "echo -- Installing: symlink $<TARGET_FILE_NAME:${PROJECT_NAME}_py>;ln -sf ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/$<TARGET_FILE_NAME:${PROJECT_NAME}_py> ${PYTHON_SITE_PACKAGES}/$<TARGET_FILE_NAME:${PROJECT_NAME}_py>")
+file(GENERATE OUTPUT ${CMAKE_BINARY_DIR}/symlink.sh CONTENT "echo -- Installing: symlink ${MAIN_PYTHON_SITE_PACKAGES}/$<TARGET_FILE_NAME:${PROJECT_NAME}_py> from ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/$<TARGET_FILE_NAME:${PROJECT_NAME}_py>;ln -sf ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/$<TARGET_FILE_NAME:${PROJECT_NAME}_py> ${MAIN_PYTHON_SITE_PACKAGES}/$<TARGET_FILE_NAME:${PROJECT_NAME}_py>")
+
 #install(CODE TARGETS ${PROJECT_NAME}_py "execute_process(COMMAND ${CMAKE_BINARY_DIR}/symlink.sh)")
 
 install(CODE "execute_process(
