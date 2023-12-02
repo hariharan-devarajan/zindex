@@ -5,3 +5,72 @@ core
 .fig
 cmake-build-*
 /.idea/*
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+
+venv*
+build
+logs/*.log
+.idea
+zindex_py.egg-info
+dependency/.spack-env
+dependency/spack.lock
+/build-dlio/
+/build_dlio/
+/cmake_example.egg-info/
+/examples/.ipynb_checkpoints/
+/examples/dlp_analyzer/.ipynb_checkpoints/
+/examples/dlp_analyzer/dlp.log
+/examples/dlp_analyzer/dlp_analyzer_main.log
+/dlp_analyzer/test.pfw.gz.zindex
+/dlp_analyzer/dask/run_dir/*.pid
+/dlp_analyzer/dask/run_dir/*.json
+/build_env/
+/cmake-build-debug/
+/cmake-build-debug-1/
+/data/unet3d/
+/dist/
+/dlp_analyzer/dask/logs/*.log
+/output/
+/dlp_analyzer/.nfs*
+/hydra_log/unet3d/
+/temp/dlio_profiler/
+/Testing/Temporary/
+/venv-new/
+/*.core
+/env.txt
+/STDERR
+.eggs
+
