@@ -40,6 +40,7 @@ jobs:
       run: |
         export ZINDEX_WHEEL=1
         python setup.py bdist_wheel
+        python setup.py sdist
         auditwheel show dist/*.whl
         auditwheel repair --plat manylinux_2_34_x86_64 dist/*.whl -w dist/
         rm dist/*linux_x86_64.whl
