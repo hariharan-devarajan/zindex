@@ -141,7 +141,7 @@ endif (ZINDEX_ARCH_NATIVE)
 #------------------------------------------------------------------------------
 # Find Dependencies
 #------------------------------------------------------------------------------
-set(DEPENDENCY_LIB stdc++fs -lhwloc ${COMMON_LIBS})
+set(DEPENDENCY_LIB stdc++fs ${COMMON_LIBS})
 link_directories(${CMAKE_BINARY_DIR}/lib)
 link_directories(${CMAKE_BINARY_DIR})
 
