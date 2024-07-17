@@ -23,7 +23,8 @@ jobs:
         python: ['3.7', '3.8', '3.9', '3.10']
     name: ${{ matrix.python }}
     runs-on: ubuntu-latest
-
+    env:
+      DELETE_TAR: ${{ matrix.python == '3.7' && '1' || '0' }}
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python
@@ -44,6 +45,9 @@ jobs:
         auditwheel show dist/*.whl
         auditwheel repair --plat manylinux_2_34_x86_64 dist/*.whl -w dist/
         rm dist/*linux_x86_64.whl
+        if [[ "${DELETE_TAR}" == "0" ]]; then
+          rm dist/*.tar.gz
+        fi
     - name: Publish package
       uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
       with:
