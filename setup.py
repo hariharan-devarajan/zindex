@@ -118,7 +118,7 @@ long_description = (here / "README.md").read_text(encoding="utf-8")
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="zindex_py",
-    version="0.0.3",
+    version="0.0.4",
     description="Indexer for GZIP specially built for DLIO Profiler.",
     long_description=long_description,
     long_description_content_type="text/markdown",
