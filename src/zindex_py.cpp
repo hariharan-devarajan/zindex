@@ -289,7 +289,7 @@ PYBIND11_MODULE(zindex_py, m) {
         py::arg("input_file"), py::arg("index_file") = "",
         py::arg("debug") = false,  py::arg("verbose") = false
     );
-    m.def("get_total_size", &zindex::get_max_line, "Get Maximum size of uncompressed file from index",
+    m.def("get_total_size", &zindex::get_total_size, "Get Maximum size of uncompressed file from index",
         py::arg("input_file"), py::arg("index_file") = "",
         py::arg("debug") = false,  py::arg("verbose") = false
     );
