@@ -7,7 +7,7 @@ project(zindex)
 
 set(ZINDEX_VERSION_MAJOR "0")
 set(ZINDEX_VERSION_MINOR "0")
-set(ZINDEX_VERSION_PATCH "1")
+set(ZINDEX_VERSION_PATCH "3")
 set(ZINDEX_PACKAGE ${PROJECT_NAME})
 set(ZINDEX_PACKAGE_NAME ${PROJECT_NAME})
 set(ZINDEX_PACKAGE_VERSION "${ZINDEX_VERSION_MAJOR}.${ZINDEX_VERSION_MINOR}.${ZINDEX_VERSION_PATCH}")
@@ -83,11 +83,11 @@ if (NOT ZINDEX_INSTALL_DATA_DIR)
 endif ()
 
 if (NOT CMAKE_INSTALL_RPATH)
-    message("-- " "[ZINDEX] using RPATH")	
+    message("-- " "[ZINDEX] using RPATH")
     set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib:${PYTHON_SITE_PACKAGES}/lib:${PYTHON_SITE_PACKAGES}/lib64")
     set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 else()
-    message("-- " "[ZINDEX] not using RPATH")	
+    message("-- " "[ZINDEX] not using RPATH")
 endif ()
 
 #------------------------------------------------------------------------------
@@ -107,7 +107,6 @@ if (NOT ZINDEX_EXTERNALLY_CONFIGURED)
             ${CMAKE_BINARY_DIR}/lib CACHE PATH "Single Directory for all static libraries."
     )
 endif ()
-
 
 if (ZINDEX_PGO)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${PGO}")
@@ -136,7 +135,6 @@ if (ZINDEX_ARCH_NATIVE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=native")
 endif (ZINDEX_ARCH_NATIVE)
-
 
 #------------------------------------------------------------------------------
 # Find Dependencies
@@ -396,7 +394,3 @@ if (ZINDEX_BUILD_SQL_SHELL)
     add_executable(sql-shell ext/sqlite/shell.c ext/sqlite/sqlite3.c)
     target_link_libraries(sql-shell ${COMMON_LIBS})
 endif (ZINDEX_BUILD_SQL_SHELL)
-
-
-
-
