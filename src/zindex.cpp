@@ -98,7 +98,7 @@ int Main(int argc, const char *argv[]) {
 
         auto outputFile = indexFilename.isSet() ? indexFilename.getValue() :
                           inputFile.getValue() + ".zindex";
-        Index::Builder builder(log, move(in), realPath, outputFile);
+        Index::Builder builder(log, std::move(in), realPath, outputFile);
         if (skipFirst.isSet())
             builder.skipFirst(skipFirst.getValue());
 

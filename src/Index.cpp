@@ -617,14 +617,15 @@ INSERT INTO LineOffsets VALUES(:line, :offset, :length))");
                                 .step();
                         addIndex.reset();
                     }
-                    uint8_t apWindow[compressBound(WindowSize)];
-                    auto size = makeWindow(apWindow, sizeof(apWindow), window,
+                    auto apWindowSize = compressBound(WindowSize);
+                    std::vector<uint8_t> apWindow(apWindowSize);
+                    auto size = makeWindow(apWindow.data(), apWindow.size(), window,
                                            zs.stream.avail_out);
                     addIndex
                             .bindInt64(":uncompressedOffset", totalOut)
                             .bindInt64(":compressedOffset", totalIn)
                             .bindInt64(":bitOffset", zs.stream.data_type & 0x7)
-                            .bindBlob(":window", apWindow, size);
+                            .bindBlob(":window", apWindow.data(), size);
                     last = totalOut;
                     emitInitialAccessPoint = false;
                 }
