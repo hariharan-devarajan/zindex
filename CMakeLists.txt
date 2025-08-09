@@ -160,6 +160,8 @@ set(DEPENDENCY_LIB ${COMMON_LIBS})
 if (NEED_STDCXXFS)
     list(APPEND DEPENDENCY_LIB stdc++fs)
 endif()
+list(APPEND DEPENDENCY_LIB static-libgcc)
+list(APPEND DEPENDENCY_LIB static-libstdc++)
 link_directories(${CMAKE_BINARY_DIR}/lib)
 link_directories(${CMAKE_BINARY_DIR})
 
