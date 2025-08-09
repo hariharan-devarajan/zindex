@@ -146,6 +146,7 @@ setup(
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3 :: Only",
     ],
+    setup_requires=["pybind11==2.13.6", "setuptools>=64", "wheel", "cmake>=3.12"],
     install_requires=["pybind11==2.13.6", "setuptools>=64", "wheel", "cmake>=3.12"],
     keywords="profiler, deep learning, I/O, benchmark, NPZ, pytorch benchmark, tensorflow benchmark",
     project_urls={  # Optional
