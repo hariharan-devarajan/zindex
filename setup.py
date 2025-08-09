@@ -144,9 +144,9 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3 :: Only",
     ],
-    setup_requires=['pybind11'],
+    setup_requires=["pybind11"],
     install_requires=["pybind11"],
-    requires=["pybind11"],
+    requires=["pybind11", "setuptools"],
     keywords="profiler, deep learning, I/O, benchmark, NPZ, pytorch benchmark, tensorflow benchmark",
     project_urls={  # Optional
         "Bug Reports": "https://github.com/hariharan-devarajan/zindex/issues",
