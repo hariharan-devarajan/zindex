@@ -161,7 +161,7 @@ endif()
 link_directories(${CMAKE_BINARY_DIR}/lib)
 link_directories(${CMAKE_BINARY_DIR})
 
-set(PYBIND11_FINDPYTHON ON)
+# set(PYBIND11_FINDPYTHON ON)
 if (BUILD_PYTHON_BINDINGS)
     find_package(pybind11 REQUIRED)
 endif()
