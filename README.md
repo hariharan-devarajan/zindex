@@ -1,7 +1,7 @@
 ### DISCLAIMER
 
 This repo is a fork of the original repo located at https://github.com/mattgodbolt/zindex.
-We modify this repo for using it cohesively with DLIO Profiler https://github.com/hariharan-devarajan/dlio-profiler.
+We modify this repo for using it cohesively with DFTracer https://github.com/LLNL/dftracer.git.
 
 
 `zindex` creates and queries an index on a compressed, line-based text file in a
