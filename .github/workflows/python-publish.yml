@@ -37,14 +37,14 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y gcc g++ libtool-bin openmpi-bin libopenmpi-dev
         python -m pip install --upgrade pip
-        pip install build wheel auditwheel
+        pip install build wheel auditwheel pybind11 patchelf setuptools>=64 setuptools-scm>=8
     - name: Build package
       run: |
         export ZINDEX_WHEEL=1
         python setup.py bdist_wheel
         python setup.py sdist
         auditwheel show dist/*.whl
-        platform=$(auditwheel show dist/*.whl | grep manylinux_ | awk -F'"' '{print $2}')
+        platform=$(auditwheel show dist/*.whl | grep manylinux_ | grep -v whl | grep constrains | awk -F'"' '{print $2}')
         auditwheel show dist/*.whl | grep manylinux_
         echo "Platform selected is $platform"
         auditwheel repair --plat $platform dist/*.whl -w dist/
